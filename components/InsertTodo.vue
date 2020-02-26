@@ -95,10 +95,14 @@ export default {
       return this.$store.$db().model("todos");
     },
     users() {
-      return this.User.all();
+      return this.User.query()
+        .with("todos")
+        .get();
     },
     todos() {
-      return this.Todo.all();
+      return this.Todo.query()
+        .with("assignee")
+        .get();
     },
     userSelectOptions() {
       const options = [];
@@ -119,7 +123,7 @@ export default {
           title: this.newTodoTitle,
           user_id: this.selectedUser
         }
-      }).then(r => this.insertResult = r)
+      }).then(r => (this.insertResult = r));
     }
   }
 };
